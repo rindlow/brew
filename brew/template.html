@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet"
+	  href="https://fonts.googleapis.com/css?family=Roboto">
+    <title>{name}</title>
+  </head>
+  <body>
+    <div id="brewery"><span id="breweryname">Björkeby</span></div>
+    <div id="basics">
+      <h1 id="beername">{name}</h1>
+      <div id="description">{description}</div>
+      <div id="author">{author}</div>
+    </div>
+    <div id="ingredients">
+      <h2>Ingredients</h2>
+      <h3>Malt</h3>
+      <table id="malt">
+{malt}
+      </table>
+      <h3>Hops</h3>
+      <table id="hops">
+{hops}
+      </table>
+{other}
+      <h3>Yeast</h3>
+      <table id="yeast">
+{yeast}
+      </table>
+    </div>
+    <div id="statsdiv">
+      <h2>Stats</h2>
+      <table id="stats">
+{stats}
+      </table>
+      <h2>Mash Schedule</h2>
+      <table id="mash">
+{mash}
+      </table>
+    </div>
+  </body>
+</html>
+	

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet"
+	  href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet"
+	  href="https://fonts.googleapis.com/css?family=Roboto+Slab">
+    <title>{name}</title>
+  </head>
+  <body>
+    <script type="text/javascript"
+	    src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {{packages: ['corechart']}});
+      google.charts.setOnLoadCallback(drawChart);
+  
+      function drawChart() {{
+      var data = new google.visualization.DataTable();
+      data.addColumn('timeofday', 'Elapsed time');
+      data.addColumn('number', 'Heat');
+      data.addColumn('number', 'Mash');
+      data.addColumn('number', 'Boil');
+      data.addColumn('number', 'Cool');
+      data.addRows({chartdata});
+
+      var options = {{
+      title: 'Schedule',
+      legend: {{position: 'top'}},
+      colors: ['red', 'orange', 'maroon', 'blue'],
+      hAxis: {{title: 'Elapsed time (hours)', ticks: [
+      {{v:[1, 0, 0], f:'1'}},
+      {{v:[2, 0, 0], f:'2'}},
+      {{v:[3, 0, 0], f:'3'}},
+      {{v:[4, 0, 0], f:'4'}}]}},
+      vAxis: {{title: 'Temperature (°C)', maxValue: 110}}
+      }};
+
+      var chart = new google.visualization.AreaChart(document.getElementById('mash'));
+      chart.draw(data, options);
+      }};
+    </script>
+    <div id="brewery"><span id="breweryname">Björkeby</span></div>
+    <div id="basics">
+      <h1 id="beername">{name}</h1>
+      <div id="author">{author}</div>
+    </div>
+    <div id="instructions">
+      <h2>Instructions</h2>
+      <ol>
+	<li>Program Braumeister with the following program:
+	  <table>
+{program}
+	  </table>
+	<li>Fill <strong>{mashvol:.1f}</strong> liters of water into Braumeister
+	<li>Start program and wait for approximately {heattime} for the water temperature to reach {mashin} °C.
+	<li>Insert malt pipe and fill with the following malts:
+	  <table>
+{malt}	    
+	  </table>
+	<li>Start mashing step and wait for approximately {mashtime}
+	<li>Lift malt pipe and sparge with <strong>{spargevol:.1f}</strong> liters of water. Measure SG, estimated: {mashgrav:.03f}, actual: ______, volume: ______
+	<li>Start boiling step and wait for approximately {boilup} for the water to boil
+	<li>Add hops and additives when the Braumeister chimes:
+	  <table>
+{other}
+	  </table>
+	<li>Cool wort for approximately 30 minutes to 20 °C. Measure OG, estimated: {og:.03f}, actual: ______, volume: ______
+	<li>Transfer to fermenter and add
+	  <table>
+{fermenter}
+	  </table>
+      </ol>
+      <h2>Schedule</h2>
+      <div id="mash">
+      </div>
+    </div>
+  </body>
+</html>
+	
