@@ -44,6 +44,11 @@ class CzechBudejoviceLager(Yeast):
     attenuation = 0.77
 
 
+class EmpireAle(Yeast):
+    name = "Empire Ale - Mangrove Jack's M15"
+    attenuation = 0.72
+
+
 class GermanAleKolsch(Yeast):
     name = 'German Ale/Kölsch - WLP029'
     attenuation = 0.75
