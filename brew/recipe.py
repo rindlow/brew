@@ -34,6 +34,7 @@ class Recipe:
     late_grav = 0.0
     style_override = None
     description = None
+    logs = []
     author = 'Henrik Rindlöw'
 
     def calc_volumes(self, malt_amount):
@@ -58,7 +59,7 @@ class Recipe:
                 raise TooSmallBatchError(
                     f'({self.mash_volume:.1f}'
                     f' < {self.profile.min_mash_volume:.1f}'
-                    ' needed')
+                    ' needed)')
         if self.mash_volume > self.profile.max_mash_volume:
             self.sparge_volume += (self.mash_volume
                                    - self.profile.max_mash_volume)
@@ -118,6 +119,8 @@ class Recipe:
         if report:
             print('Extract')
         malt_amount = sum([f.amount for f in self.fermentables if f.in_mash])
+        if malt_amount > self.profile.max_malt_weight:
+            raise TooMuchMaltError(f'({malt_amount} kg > {self.profile.max_malt_weight} kg)')
         self.calc_volumes(malt_amount)
         if report:
             print('  In Mash')
@@ -275,8 +278,9 @@ class Recipe:
                     f'{f.amount:.2f} kg',
                     f'{int(100.0 * f.amount / malt_amount)} %')
             else:
-                other += templates.row2(f.name,
-                                        f'{f.amount:.2f} kg')
+                other += templates.row3(f.name,
+                                        f'{f.amount:.2f} kg',
+                                        'in boil')
         d['hops'] = ''.join([hop.html() for hop in self.hops])
         d['yeast'] = self.yeast.html()
         other += ''.join([o.html() for o in self.other])
@@ -451,6 +455,7 @@ class Recipe:
                 f.write(self.instructions())
         else:
             self.design(report=True)
+            self.printlog()
 
     def log(self,
             brew_date=None,
@@ -458,26 +463,34 @@ class Recipe:
             original_gravity=None,
             racking_date=None,
             final_gravity=None):
-        print()
-        if brew_date is not None:
-            print(f'Brew day {brew_date}')
-        if mash_gravity is not None:
-            print(f'  Mash gravity {mash_gravity:.3f}'
-                  f', estimated {self.mash_grav:.3f}')
-        if original_gravity is not None:
-            print(f'  OG {original_gravity:.3f}, estimated {self.og:.3f}')
-        if racking_date is not None:
-            print(f' Racked {racking_date}')
-        if brew_date is not None and racking_date is not None:
-            ferm = (datetime.date.fromisoformat(racking_date)
-                    - datetime.date.fromisoformat(brew_date))
-            print(f'  Fermentation time {ferm.days} days')
-        if final_gravity is not None:
-            print(f'  FG {final_gravity:.3f}'
-                  f', estimated {self.final_gravity():.3f}')
-        if original_gravity is not None and final_gravity is not None:
-            print(f'  ABV {self.abv(original_gravity, final_gravity):.1f} %'
-                  f', estimated {self.abv():.1f} %')
+        self.logs.append((brew_date,
+                          mash_gravity,
+                          original_gravity,
+                          racking_date,
+                          final_gravity))
+
+    def printlog(self):
+        for brew_date, mash_gravity, original_gravity, racking_date, final_gravity in self.logs:
+            print()
+            if brew_date is not None:
+                print(f'Brew day {brew_date}')
+            if mash_gravity is not None:
+                print(f'  Mash gravity {mash_gravity:.3f}'
+                    f', estimated {self.mash_grav:.3f}')
+            if original_gravity is not None:
+                print(f'  OG {original_gravity:.3f}, estimated {self.og:.3f}')
+            if racking_date is not None:
+                print(f' Racked {racking_date}')
+            if brew_date is not None and racking_date is not None:
+                ferm = (datetime.date.fromisoformat(racking_date)
+                        - datetime.date.fromisoformat(brew_date))
+                print(f'  Fermentation time {ferm.days} days')
+            if final_gravity is not None:
+                print(f'  FG {final_gravity:.3f}'
+                    f', estimated {self.final_gravity():.3f}')
+            if original_gravity is not None and final_gravity is not None:
+                print(f'  ABV {self.abv(original_gravity, final_gravity):.1f} %'
+                    f', estimated {self.abv():.1f} %')
 
 
 class Ingredient:
@@ -530,6 +543,9 @@ class Step:
                                   f'{self.time} min',
                                   f'{self.temperature} °C')
 
+
+class TooMuchMaltError(Exception):
+    pass
 
 class TooSmallBatchError(Exception):
     pass
