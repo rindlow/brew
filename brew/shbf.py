@@ -95,6 +95,18 @@ class Marzen(Style):
     min_ebc = 15
     max_ebc = 34
 
+class FranconianLager(Style):
+    code = '1D'
+    min_og = 1.044
+    max_og = 1.055
+    min_fg = 1.008
+    max_fg = 1.015
+    min_abv = 4.5
+    max_abv = 5.5
+    min_ibu = 25
+    max_ibu = 35
+    min_ebc = 15
+    max_ebc = 59
 
 class CzechPilsener(Style):
     code = '1G'
@@ -136,6 +148,20 @@ class EnglishDarkMild(Style):
     max_ibu = 24
     min_ebc = 40
     max_ebc = 90
+
+
+class EnglishOrdinaryBitter(Style):
+    code = '3F'
+    min_og = 1.034
+    max_og = 1.040
+    min_fg = 1.006
+    max_fg = 1.012
+    min_abv = 3.4
+    max_abv = 4.0
+    min_ibu = 20
+    max_ibu = 40
+    min_ebc = 16
+    max_ebc = 30
 
 
 class EnglishBestBitter(Style):
@@ -208,6 +234,20 @@ class AmericanIPA(Style):
     max_ebc = 25
 
 
+class BarleyWine(Style):
+    code = '5G'
+    min_og = 1.083
+    max_og = 1.200              # Unlimited
+    min_fg = 1.018
+    max_fg = 1.030              # Unlimited
+    min_abv = 8.5
+    max_abv = 12                # Unlimited
+    min_ibu = 50
+    max_ibu = 100
+    min_ebc = 30
+    max_ebc = 75
+
+
 class Porter(Style):
     code = '7D'
     min_og = 1.053
@@ -267,7 +307,7 @@ class DarkStrongBelgianAle(Style):
 class Saison(Style):
     code = '9H'
     min_og = 1.044
-    max_og = 1.056              # Unlimited
+    max_og = 1.056
     min_fg = 1.002
     max_fg = 1.008
     min_abv = 5.0

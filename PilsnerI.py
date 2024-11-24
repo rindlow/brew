@@ -3,16 +3,16 @@
 import brew
 from brew.profiles import Braumeister20l
 from brew.fermentables import (
+    DextrinMalt,
     PilsnerMalt,
-    MelanoidinMalt,
-    CaraPils
+    GoldenSyrup,
 )
 from brew.hops import (
     Saaz,
     NorthernBrewer
 )
 from brew.shbf import CzechPilsener
-from brew.yeast import CzechBudejoviceLager
+from brew.yeast import BohemianLager
 
 
 class Recipe(brew.Recipe):
@@ -22,27 +22,33 @@ class Recipe(brew.Recipe):
         self.profile = Braumeister20l()
         self.fermentables = [
             PilsnerMalt(5.0),
-            MelanoidinMalt(0.3),
-            CaraPils(0.3),
+            DextrinMalt(0.5),
+            GoldenSyrup(0.15),
         ]
         self.hops = [
-            Saaz(40, 60, alpha=2.2),
-            NorthernBrewer(8, 60, alpha=10.4),
-            Saaz(20, 40, alpha=2.2),
-            Saaz(30, 20, alpha=2.2),
-        ]
-        self.yeast = CzechBudejoviceLager()
-        self.mash = brew.SingleStepMashWithMashOut(68)
+            Saaz(30, 60, alpha=3.3),
+            NorthernBrewer(8, 60, alpha=12.2),
+            Saaz(20, 40, alpha=3.3),
+            Saaz(30, 20, alpha=3.3),
+        ]  # 30.3
+        self.yeast = BohemianLager()
+        self.mash = brew.SingleStepMash(68)
         self.boil_time = 60
         self.batch_size = 20
 
 
 if __name__ == "__main__":
     recipe = Recipe()
-    recipe.run()
     recipe.log(
         brew_date="2020-01-26",
         original_gravity=1.053,
         racking_date="2020-03-07",
         final_gravity=1.015,
     )
+    recipe.log(
+        brew_date="2022-10-27",
+        original_gravity=1.047,
+        racking_date="2022-11-10",
+        final_gravity=1.010,
+    )
+    recipe.run()

@@ -26,18 +26,18 @@ class Recipe(brew.Recipe):
         ]
 
         self.hops = [
-            Simcoe(20, 60),
-            Simcoe(20, 10),
-            Amarillo(20, 10),
-            Simcoe(30, 0),
-            Amarillo(30, 0),
-            Simcoe(30, brew.dryhop),
-            Amarillo(50, brew.dryhop),
-        ]
+            Simcoe(24, 60, alpha=12.5),
+            Simcoe(20, 10, alpha=12.5),
+            Amarillo(20, 10, alpha=7.5),
+            Simcoe(30, 0, alpha=12.5),
+            Amarillo(30, 0, alpha=7.5),
+            Simcoe(26, brew.dryhop,  alpha=12.5),
+            Amarillo(50, brew.dryhop, alpha=7.5),
+        ] # 60 IBU
 
         self.yeast = brew.yeast.US05()
 
-        self.mash = brew.SingleStepMashWithMashOut(67)
+        self.mash = brew.SingleStepMash(67)
 
         self.boil_time = 60
         self.batch_size = 16
@@ -45,11 +45,19 @@ class Recipe(brew.Recipe):
 
 if __name__ == "__main__":
     recipe = Recipe()
-    recipe.run()
     recipe.log(
         brew_date="2021-07-24",
         mash_gravity=1.050,
         original_gravity=1.064,
         racking_date="2021-08-14",
         final_gravity=1.014,
+    )  
+    recipe.log(
+        brew_date="2022-11-26",
+        mash_gravity=1.046,
+        original_gravity=1.058,
+        racking_date="2022-12-04",
+        final_gravity=1.011,
     )
+    recipe.run()
+

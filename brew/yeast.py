@@ -39,6 +39,11 @@ class BelgianStrongAle(Yeast):
     attenuation = 0.75
 
 
+class BohemianLager(Yeast):
+    name = "Bohemian Lager - Mangrove Jack's M84"
+    attenuation = 0.74
+
+
 class CzechBudejoviceLager(Yeast):
     name = 'Czech Budejovice Lager - WLP802'
     attenuation = 0.77
@@ -69,6 +74,11 @@ class LondonESBAle(Yeast):
     attenuation = 0.69
 
 
+class Nottingham(Yeast):
+    name = 'Lallemand Nottingham Ale'
+    attenuation = 0.81
+
+
 class S04(Yeast):
     name = 'Safale S-04 (Whitbread)'
     attenuation = 0.73
@@ -82,6 +92,11 @@ class US05(Yeast):
 class SaflagerW34_70(Yeast):
     name = 'Saflager W-34/70'
     attenuation = 0.75
+
+
+class SouthernGermanLager(Yeast):
+    name = 'Southern German Lager - WLP838'
+    attenuation = 0.73
 
 
 class TrappistHighGravity(Yeast):

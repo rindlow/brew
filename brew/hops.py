@@ -42,6 +42,11 @@ class Amarillo(Hop):
     alpha = 10
 
 
+class BavariaMandarina(Hop):
+    name = 'Bavaria Mandarina'
+    alpha = 6.0
+
+
 class Bobek(Hop):
     name = 'Bobek (Styrian Goldings)'
     alpha = 5.0
@@ -87,6 +92,11 @@ class Galaxy(Hop):
     alpha = 13.5
 
 
+class HallertauTradition(Hop):
+    name = 'Hallertau Tradition'
+    alpha = 6.0
+
+
 class HallertauerMittelfruh(Hop):
     name = 'Hallertauer Mittelfruh'
     alpha = 3.7
@@ -97,13 +107,13 @@ class Magnum(Hop):
     alpha = 12.0
 
 
-class Perle(Hop):
-    name = 'Perle'
+class NorthernBrewer(Hop):
+    name = 'Northern Brewer'
     alpha = 8.0
 
 
-class NorthernBrewer(Hop):
-    name = 'Northern Brewer'
+class Perle(Hop):
+    name = 'Perle'
     alpha = 8.0
 
 
@@ -115,6 +125,11 @@ class Saaz(Hop):
 class Simcoe(Hop):
     name = 'Simcoe'
     alpha = 13.5
+
+
+class Target(Hop):
+    name = 'Target'
+    alpha = 10.0
 
 
 class Willamette(Hop):

@@ -26,22 +26,24 @@ class Recipe(brew.Recipe):
         ]
         self.hops = [Saaz(55, 60), Saaz(15, 15)]
         self.yeast = BavarianLager()
-        self.mash = brew.MashSchedule(
-            [
-                brew.Step(67, 60, "Saccharification rest"),
-                brew.Step(77, 10, "Mash Out"),
-            ]
-        )
+        self.mash = brew.SingleStepMashWithMashOut(67)
+
         self.boil_time = 60
         self.batch_size = 20
 
 
 if __name__ == "__main__":
     recipe = Recipe()
-    recipe.run()
     recipe.log(
         brew_date="2019-04-28",
         original_gravity=1.053,
         racking_date="2019-05-14",
         final_gravity=1.015,
     )
+    recipe.log(
+        brew_date="2021-09-05",
+        original_gravity=1.053,
+        racking_date="2021-10-13",
+        final_gravity=1.015,
+    )
+    recipe.run()

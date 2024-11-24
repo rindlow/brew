@@ -39,6 +39,10 @@ class Recipe:
 
     def calc_volumes(self, malt_amount):
 
+        if self.batch_size < self.profile.min_batch_size:
+            raise TooSmallBatchError(
+                f'({self.batch_size:.1f}'
+                f' < {self.profile.min_batch_size:.1f})')
         boil_volume = (self.batch_size + self.profile.kettle_deadspace
                        + self.boil_time * self.profile.boil_off_rate / 60)
         if boil_volume > self.profile.max_boil_volume:
@@ -49,23 +53,12 @@ class Recipe:
         self.mash_volume = (boil_volume + self.water_in_malt
                             - self.sparge_volume)
 
-        if self.mash_volume < self.profile.min_mash_volume:
-            ms = self.mash_volume + self.sparge_volume
-            if ms > self.profile.min_mash_volume:
-                self.sparge_volume = (self.profile.min_mash_volume
-                                      - self.mash_volume)
-                self.mash_volume = self.profile.min_mash_volume
-            else:
-                raise TooSmallBatchError(
-                    f'({self.mash_volume:.1f}'
-                    f' < {self.profile.min_mash_volume:.1f}'
-                    ' needed)')
         if self.mash_volume > self.profile.max_mash_volume:
             self.sparge_volume += (self.mash_volume
                                    - self.profile.max_mash_volume)
             self.mash_volume = self.profile.max_mash_volume
 
-    def calc_gravities(self, boil_gravity=False, report=False):
+    def calc_gravities(self, report=False):
         late_extract, potential_extract = self.calc_extract(report)
 
         if report:
@@ -120,7 +113,9 @@ class Recipe:
             print('Extract')
         malt_amount = sum([f.amount for f in self.fermentables if f.in_mash])
         if malt_amount > self.profile.max_malt_weight:
-            raise TooMuchMaltError(f'({malt_amount} kg > {self.profile.max_malt_weight} kg)')
+            raise TooMuchMaltError(
+                f'({malt_amount} kg '
+                f'> {self.profile.max_malt_weight} kg)')
         self.calc_volumes(malt_amount)
         if report:
             print('  In Mash')
@@ -139,9 +134,8 @@ class Recipe:
                           effective_extract)
             print(rfill('   Malt Weight', 34),
                   lfill(f'{malt_amount:.3f} kg', 8))
-        if any([not f.in_mash for f in self.fermentables]):
-            if report:
-                print('  In Kettle')
+        if any([not f.in_mash for f in self.fermentables]) and report:
+            print('  In Kettle')
         for f in [f for f in self.fermentables if not f.in_mash]:
             late_extract += f.potential_extract(report=report)
 
@@ -395,7 +389,7 @@ class Recipe:
         times = set([f'{h.minutes: 3d}' for h in self.hops
                      if type(h.minutes) == int])
         hops = '/'.join(sorted(times, reverse=True))
-        p += templates.row2b('Hop additions', hops)
+        p += templates.row2b('Hop additions', f'{hops} min')
         return p
 
     def instructions(self):
@@ -409,7 +403,7 @@ class Recipe:
             d['description'] = '<br>'.join(self.description)
         else:
             d['description'] = self.description
-        other = ''
+        d['other'] = ''
         for f in self.fermentables:
             if f.in_mash:
                 d['malt'] += templates.row2(
@@ -423,7 +417,7 @@ class Recipe:
         d['fermenter'] = self.yeast.html()
         d['fermenter'] += ''.join([hop.fermenter() for hop in self.hops
                                    if hop.minutes == dryhop])
-        other += ''.join([o.html() for o in self.other])
+        d['other'] += ''.join([o.html() for o in self.other])
         d['chartdata'] = self.chartdata()
         d['program'] = self.program()
         d['mashvol'] = self.mash_volume
@@ -470,13 +464,14 @@ class Recipe:
                           final_gravity))
 
     def printlog(self):
-        for brew_date, mash_gravity, original_gravity, racking_date, final_gravity in self.logs:
+        for (brew_date, mash_gravity, original_gravity, racking_date,
+             final_gravity) in self.logs:
             print()
             if brew_date is not None:
                 print(f'Brew day {brew_date}')
             if mash_gravity is not None:
                 print(f'  Mash gravity {mash_gravity:.3f}'
-                    f', estimated {self.mash_grav:.3f}')
+                      f', estimated {self.mash_grav:.3f}')
             if original_gravity is not None:
                 print(f'  OG {original_gravity:.3f}, estimated {self.og:.3f}')
             if racking_date is not None:
@@ -487,10 +482,10 @@ class Recipe:
                 print(f'  Fermentation time {ferm.days} days')
             if final_gravity is not None:
                 print(f'  FG {final_gravity:.3f}'
-                    f', estimated {self.final_gravity():.3f}')
+                      f', estimated {self.final_gravity():.3f}')
             if original_gravity is not None and final_gravity is not None:
-                print(f'  ABV {self.abv(original_gravity, final_gravity):.1f} %'
-                    f', estimated {self.abv():.1f} %')
+                print(f'  ABV {self.abv(original_gravity, final_gravity):.1f}'
+                      f' %, estimated {self.abv():.1f} %')
 
 
 class Ingredient:
@@ -507,7 +502,8 @@ class Ingredient:
 class MashSchedule:
 
     def __init__(self, steps):
-        self.steps = [Step(60, 0, 'Mash In')] + steps
+        self.steps = steps
+        self.double = False
 
     def program(self):
         print('Mash Schedule')
@@ -523,8 +519,23 @@ class MashSchedule:
 class SingleStepMashWithMashOut(MashSchedule):
 
     def __init__(self, temp):
-        MashSchedule.__init__(self, [Step(temp, 60, 'Saccharification rest'),
+        MashSchedule.__init__(self, [Step(60, 0, 'Mash In'),
+                                     Step(temp, 60, 'Saccharification rest'),
                                      Step(77, 10, 'Mash Out')])
+
+
+class SingleStepMash(MashSchedule):
+
+    def __init__(self, temp):
+        MashSchedule.__init__(self, [Step(60, 0, 'Mash In'),
+                                     Step(temp, 60, 'Saccharification rest')])
+
+
+class DoubleSingleStepMashWithMashOut(SingleStepMashWithMashOut):
+
+    def __init__(self, temp):
+        super.__init__(temp)
+        self.double = True
 
 
 class Step:
@@ -546,6 +557,7 @@ class Step:
 
 class TooMuchMaltError(Exception):
     pass
+
 
 class TooSmallBatchError(Exception):
     pass

@@ -7,7 +7,7 @@ class Fermentable:
 
     in_mash = True
     potential = 0.0
-    color = 0
+    color = 0.0
     name = '<fermentable>'
 
     def __init__(self, amount):
@@ -158,6 +158,12 @@ class DarkMunich(Fermentable):
     color = 50
 
 
+class CaraRuby(Fermentable):
+    name = 'CaraRuby'
+    potential = .78
+    color = 50
+
+
 class Aromatic(Fermentable):
     name = 'Aromatic Malt'
     potential = .79
@@ -224,10 +230,22 @@ class SpecialB(Fermentable):
     color = 300
 
 
+class CaraAroma(Fermentable):
+    name = 'CaraAroma'
+    potential = .74
+    color = 350
+
+
 class ChocolateMalt(Fermentable):
     name = 'Chocolate Malt'
     potential = .65
     color = 1000
+
+
+class BlackMalt(Fermentable):
+    name = 'Black Malt'
+    potential = .715
+    color = 1300
 
 
 class Caramel(Fermentable):
