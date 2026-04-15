@@ -32,7 +32,7 @@ class Recipe(brew.Recipe):
             EastKentGoldings(30, 1)
         ]
         self.yeast = Nottingham()
-        self.mash = brew.SingleStepMashWithMashOut(67)
+        self.mash = brew.SingleStepMash(67)
 
         self.boil_time = 60
         self.batch_size = 20
@@ -44,7 +44,7 @@ if __name__ == "__main__":
     recipe.log(
         brew_date="2024-11-24",
         original_gravity=1.049,
-        racking_date="2024-12-24",
-        final_gravity=1.012,
+        racking_date="2024-12-02",
+        final_gravity=1.011,
     )
     recipe.run()

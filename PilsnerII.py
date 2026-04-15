@@ -38,15 +38,9 @@ class Recipe(brew.Recipe):
 if __name__ == "__main__":
     recipe = Recipe()
     recipe.log(
-        brew_date="2020-01-26",
-        original_gravity=1.053,
-        racking_date="2020-03-07",
+        brew_date="2025-03-02",
+        original_gravity=1.055,
+        racking_date="2025-03-15",
         final_gravity=1.015,
-    )
-    recipe.log(
-        brew_date="2022-10-27",
-        original_gravity=1.047,
-        racking_date="2022-11-10",
-        final_gravity=1.010,
     )
     recipe.run()
