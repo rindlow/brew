@@ -2,7 +2,6 @@ from .common import slider
 
 
 class Style:
-
     min_og = 0.0
     max_og = 0.0
     min_fg = 0.0
@@ -14,62 +13,68 @@ class Style:
     min_ebc = 0.0
     max_ebc = 0.0
 
-    def compliance_check(self, og, fg, abv, ibu, ebc, report=True):
+    def compliance_check(
+        self, og: float, fg: float, abv: float, ibu: float, ebc: float, *, report: bool
+    ) -> bool:
 
         compliant = True
         if report:
-            print('Style')
+            print("Style")
 
         if self.min_og <= round(og, 3) <= self.max_og:
             if report:
-                slider('OG', self.min_og, self.max_og, og, '%.3f')
+                slider("OG", self.min_og, self.max_og, og, "%.3f")
         else:
             compliant = False
             if report:
-                print(f'   OG {og:.3f} not in range',
-                      f'{self.min_og} - {self.max_og}')
+                print(f"   OG {og:.3f} not in range", f"{self.min_og} - {self.max_og}")
 
         if self.min_fg <= round(fg, 3) <= self.max_fg:
             if report:
-                slider('FG', self.min_fg, self.max_fg, fg, '%.3f')
+                slider("FG", self.min_fg, self.max_fg, fg, "%.3f")
         else:
             compliant = False
             if report:
-                print(f'   FG {fg:.3f} not in range',
-                      f'{self.min_fg:.3f} - {self.max_fg:.3f}')
+                print(
+                    f"   FG {fg:.3f} not in range",
+                    f"{self.min_fg:.3f} - {self.max_fg:.3f}",
+                )
 
         if self.min_abv <= round(abv, 1) <= self.max_abv:
             if report:
-                slider('ABV', self.min_abv, self.max_abv, abv, '%.1f')
+                slider("ABV", self.min_abv, self.max_abv, abv, "%.1f")
         else:
             compliant = False
             if report:
-                print(f'   ABV {abv:.1f} not in range',
-                      f'{self.min_abv} - {self.max_abv}')
+                print(
+                    f"   ABV {abv:.1f} not in range", f"{self.min_abv} - {self.max_abv}"
+                )
 
         if self.min_ibu <= round(ibu, 0) <= self.max_ibu:
             if report:
-                slider('IBU', self.min_ibu, self.max_ibu, ibu, '%.0f')
+                slider("IBU", self.min_ibu, self.max_ibu, ibu, "%.0f")
         else:
             compliant = False
             if report:
-                print(f'   IBU {ibu:.0f} not in range',
-                      f'{self.min_ibu} - {self.max_ibu}')
+                print(
+                    f"   IBU {ibu:.0f} not in range", f"{self.min_ibu} - {self.max_ibu}"
+                )
 
         if self.min_ebc <= round(ebc, 0) <= self.max_ebc:
             if report:
-                slider('EBC', self.min_ebc, self.max_ebc, ebc, '%.0f')
+                slider("EBC", self.min_ebc, self.max_ebc, ebc, "%.0f")
         else:
             compliant = False
             if report:
-                print(f'   EBC {ebc:.0f} not in range',
-                      f'{self.min_ebc} - {self.max_ebc}')
+                print(
+                    f"   EBC {ebc:.0f} not in range", f"{self.min_ebc} - {self.max_ebc}"
+                )
 
         return compliant
 
 
 class Helles(Style):
-    code = '1A'
+    code = "1A"
     min_og = 1.044
     max_og = 1.050
     min_fg = 1.008
@@ -83,7 +88,7 @@ class Helles(Style):
 
 
 class Marzen(Style):
-    code = '1C'
+    code = "1C"
     min_og = 1.048
     max_og = 1.060
     min_fg = 1.010
@@ -95,8 +100,9 @@ class Marzen(Style):
     min_ebc = 15
     max_ebc = 34
 
+
 class FranconianLager(Style):
-    code = '1D'
+    code = "1D"
     min_og = 1.044
     max_og = 1.055
     min_fg = 1.008
@@ -108,8 +114,9 @@ class FranconianLager(Style):
     min_ebc = 15
     max_ebc = 59
 
+
 class CzechPilsener(Style):
-    code = '1G'
+    code = "1G"
     min_og = 1.044
     max_og = 1.050
     min_fg = 1.010
@@ -123,7 +130,7 @@ class CzechPilsener(Style):
 
 
 class Bock(Style):
-    code = '2A'
+    code = "2A"
     min_og = 1.066
     max_og = 1.074
     min_fg = 1.012
@@ -137,7 +144,7 @@ class Bock(Style):
 
 
 class EnglishDarkMild(Style):
-    code = '3A'
+    code = "3A"
     min_og = 1.032
     max_og = 1.037
     min_fg = 1.006
@@ -151,7 +158,7 @@ class EnglishDarkMild(Style):
 
 
 class Kolsch(Style):
-    code = '3B'
+    code = "3B"
     min_og = 1.042
     max_og = 1.046
     min_fg = 1.006
@@ -165,7 +172,7 @@ class Kolsch(Style):
 
 
 class EnglishOrdinaryBitter(Style):
-    code = '3F'
+    code = "3F"
     min_og = 1.034
     max_og = 1.040
     min_fg = 1.006
@@ -179,7 +186,7 @@ class EnglishOrdinaryBitter(Style):
 
 
 class EnglishBestBitter(Style):
-    code = '4A'
+    code = "4A"
     min_og = 1.040
     max_og = 1.046
     min_fg = 1.006
@@ -193,7 +200,7 @@ class EnglishBestBitter(Style):
 
 
 class AmericanPaleAle(Style):
-    code = '4C'
+    code = "4C"
     min_og = 1.044
     max_og = 1.056
     min_fg = 1.008
@@ -207,7 +214,7 @@ class AmericanPaleAle(Style):
 
 
 class EnglishIPA(Style):
-    code = '4E'
+    code = "4E"
     min_og = 1.050
     max_og = 1.065
     min_fg = 1.010
@@ -221,7 +228,7 @@ class EnglishIPA(Style):
 
 
 class StrongPaleAle(Style):
-    code = '5B'
+    code = "5B"
     min_og = 1.057
     max_og = 1.072
     min_fg = 1.012
@@ -235,7 +242,7 @@ class StrongPaleAle(Style):
 
 
 class AmericanIPA(Style):
-    code = '5C'
+    code = "5C"
     min_og = 1.056
     max_og = 1.070
     min_fg = 1.010
@@ -249,13 +256,13 @@ class AmericanIPA(Style):
 
 
 class BarleyWine(Style):
-    code = '5G'
+    code = "5G"
     min_og = 1.083
-    max_og = 1.200              # Unlimited
+    max_og = 1.200  # Unlimited
     min_fg = 1.018
-    max_fg = 1.030              # Unlimited
+    max_fg = 1.030  # Unlimited
     min_abv = 8.5
-    max_abv = 12                # Unlimited
+    max_abv = 12  # Unlimited
     min_ibu = 50
     max_ibu = 100
     min_ebc = 30
@@ -263,7 +270,7 @@ class BarleyWine(Style):
 
 
 class Porter(Style):
-    code = '7D'
+    code = "7D"
     min_og = 1.053
     max_og = 1.063
     min_fg = 1.015
@@ -277,7 +284,7 @@ class Porter(Style):
 
 
 class ImperialPorter(Style):
-    code = '8C'
+    code = "8C"
     min_og = 1.064
     max_og = 1.090
     min_fg = 1.015
@@ -291,7 +298,7 @@ class ImperialPorter(Style):
 
 
 class Tripel(Style):
-    code = '9C'
+    code = "9C"
     min_og = 1.070
     max_og = 1.090
     min_fg = 1.008
@@ -305,9 +312,9 @@ class Tripel(Style):
 
 
 class DarkStrongBelgianAle(Style):
-    code = '9G'
+    code = "9G"
     min_og = 1.068
-    max_og = 1.200              # Unlimited
+    max_og = 1.200  # Unlimited
     min_fg = 1.010
     max_fg = 1.018
     min_abv = 7.5
@@ -319,7 +326,7 @@ class DarkStrongBelgianAle(Style):
 
 
 class Saison(Style):
-    code = '9H'
+    code = "9H"
     min_og = 1.044
     max_og = 1.056
     min_fg = 1.002

@@ -1,36 +1,40 @@
-# -*- coding: utf-8 -*-
-
 from .common import lfill, rfill
 
 
 class Fermentable:
-
     in_mash = True
     potential = 0.0
     color = 0.0
-    name = '<fermentable>'
+    name = "<fermentable>"
 
-    def __init__(self, amount):
+    def __init__(self, amount: float) -> None:
         self.amount = amount
 
-    def potential_extract_per_kg(self):
+    def potential_extract_per_kg(self) -> float:
         return 46 * 8.3454 * self.potential
 
-    def potential_extract(self, total_amount=None, report=False):
+    def potential_extract(
+        self, total_amount: float | None = None, *, report: bool
+    ) -> None:
         if report:
             if total_amount is None:
-                percent = ''
+                percent = ""
             else:
-                percent = lfill(f'{100.0 * self.amount / total_amount:.1f} %',
-                                7)
-            print('  ', rfill(self.name, 20),
-                  ' ', lfill(f'{self.potential_extract_per_kg():.1f}', 5),
-                  ' ', lfill(f'{self.amount:.3f}', 6),
-                  ' ', lfill(f'{self.potential_extract():.1f}', 6),
-                  percent)
+                percent = lfill(f"{100.0 * self.amount / total_amount:.1f} %", 7)
+            print(
+                "  ",
+                rfill(self.name, 20),
+                " ",
+                lfill(f"{self.potential_extract_per_kg():.1f}", 5),
+                " ",
+                lfill(f"{self.amount:.3f}", 6),
+                " ",
+                lfill(f"{self.potential_extract():.1f}", 6),
+                percent,
+            )
         return self.potential_extract_per_kg() * self.amount
 
-    def mcu(self, batch_size, report=False):
+    def mcu(self, batch_size: float, *, report: bool) -> float:
         if self.color == 0:
             mcu = 0.0
         else:
@@ -38,22 +42,24 @@ class Fermentable:
             lovibond = (srm + 0.76) / 1.3546
             mcu = self.amount * (lovibond * 2.205) / (batch_size * 0.264)
         if report:
-            print(rfill(f'   {self.name}', 23),
-                  lfill(f'{self.color} EBC', 10),
-                  lfill(f'{self.amount:.2f} kg', 8),
-                  lfill(f'{mcu:.1f}', 5))
+            print(
+                rfill(f"   {self.name}", 23),
+                lfill(f"{self.color} EBC", 10),
+                lfill(f"{self.amount:.2f} kg", 8),
+                lfill(f"{mcu:.1f}", 5),
+            )
         return mcu
 
 
 class WhiteSugar(Fermentable):
-    name = 'White Sugar'
-    potential = .99
+    name = "White Sugar"
+    potential = 0.99
     color = 0
     in_mash = False
 
 
 class Amylase(Fermentable):
-    name = 'Amylase'
+    name = "Amylase"
     potential = 0
     color = 0
     in_mash = False
@@ -61,201 +67,201 @@ class Amylase(Fermentable):
 
 
 class CandiSyrup(Fermentable):
-    name = 'Candi Syrup'
-    potential = .70
+    name = "Candi Syrup"
+    potential = 0.70
     color = 354
     in_mash = False
 
 
 class FlakedBarley(Fermentable):
-    name = 'Flaked Barley'
-    potential = .7
+    name = "Flaked Barley"
+    potential = 0.7
     color = 4
 
 
 class FlakedMaize(Fermentable):
-    name = 'Flaked Maize'
-    potential = .865
+    name = "Flaked Maize"
+    potential = 0.865
     color = 0.75
 
 
 class GoldenSyrup(Fermentable):
-    name = 'Golden Syrup'
-    potential = .79
+    name = "Golden Syrup"
+    potential = 0.79
     color = 100
     in_mash = False
 
 
 class DextrinMalt(Fermentable):
-    name = 'Dextrin Malt'
-    potential = .70
+    name = "Dextrin Malt"
+    potential = 0.70
     color = 3.0
 
 
 class Pilsen6RW(Fermentable):
-    name = 'Pilsen 6RW'
-    potential = .80
+    name = "Pilsen 6RW"
+    potential = 0.80
     color = 3.4
 
 
 class PilsnerMalt(Fermentable):
-    name = 'Pilsner Malt'
-    potential = .80
+    name = "Pilsner Malt"
+    potential = 0.80
     color = 3.5
 
 
 class WheatMalt(Fermentable):
-    name = 'Wheat Malt'
-    potential = .82
+    name = "Wheat Malt"
+    potential = 0.82
     color = 4
 
 
 class CaraPils(Fermentable):
-    name = 'CaraPils'
-    potential = .75
+    name = "CaraPils"
+    potential = 0.75
     color = 4.5
 
 
 class PaleAleMalt(Fermentable):
-    name = 'Pale Ale Malt'
-    potential = .79
+    name = "Pale Ale Malt"
+    potential = 0.79
     color = 6.5
 
 
 class MarisOtterAleMalt(Fermentable):
-    name = 'Maris Otter Ale Malt'
-    potential = .815
+    name = "Maris Otter Ale Malt"
+    potential = 0.815
     color = 6.5
 
 
 class ViennaMalt(Fermentable):
-    name = 'Vienna Malt'
-    potential = .8
+    name = "Vienna Malt"
+    potential = 0.8
     color = 7.0
 
 
 class AshburneMildMalt(Fermentable):
-    name = 'Ashburne Mild Malt'
-    potential = .76
+    name = "Ashburne Mild Malt"
+    potential = 0.76
     color = 10
 
 
 class CaraGold(Fermentable):
-    name = 'Cara Gold Malt'
-    potential = .68
+    name = "Cara Gold Malt"
+    potential = 0.68
     color = 15
 
 
 class MunichI(Fermentable):
-    name = 'Münich Malt Type 1'
-    potential = .78
+    name = "Münich Malt Type 1"
+    potential = 0.78
     color = 15
 
 
 class CaraHell(Fermentable):
-    name = 'CaraHell Malt'
-    potential = .74
+    name = "CaraHell Malt"
+    potential = 0.74
     color = 20
 
 
 class DarkMunich(Fermentable):
-    name = 'Dark Münich Malt'
-    potential = .78
+    name = "Dark Münich Malt"
+    potential = 0.78
     color = 50
 
 
 class CaraRuby(Fermentable):
-    name = 'CaraRuby'
-    potential = .78
+    name = "CaraRuby"
+    potential = 0.78
     color = 50
 
 
 class Aromatic(Fermentable):
-    name = 'Aromatic Malt'
-    potential = .79
+    name = "Aromatic Malt"
+    potential = 0.79
     color = 50
 
 
 class BiscuitMalt(Fermentable):
-    name = 'Biscuit Malt'
-    potential = .75
+    name = "Biscuit Malt"
+    potential = 0.75
     color = 60
 
 
 class AmberMalt(Fermentable):
-    name = 'Amber Malt'
-    potential = .70
+    name = "Amber Malt"
+    potential = 0.70
     color = 65
 
 
 class MelanoidinMalt(Fermentable):
-    name = 'Melanoidin Malt'
-    potential = .75
+    name = "Melanoidin Malt"
+    potential = 0.75
     color = 70
 
 
 class CaraMunichI(Fermentable):
-    name = 'Caramünich Type 1'
-    potential = .73
+    name = "Caramünich Type 1"
+    potential = 0.73
     color = 80
 
 
 class CaraMunichII(Fermentable):
-    name = 'Caramünich Type 2'
-    potential = .73
+    name = "Caramünich Type 2"
+    potential = 0.73
     color = 120
 
 
 class BrownMalt(Fermentable):
-    name = 'Brown Malt'
-    potential = .70
+    name = "Brown Malt"
+    potential = 0.70
     color = 135
 
 
 class Crystal100(Fermentable):
-    name = 'Crystal 100'
-    potential = .74
+    name = "Crystal 100"
+    potential = 0.74
     color = 100
 
 
 class Crystal150(Fermentable):
-    name = 'Crystal 150'
-    potential = .74
+    name = "Crystal 150"
+    potential = 0.74
     color = 150
 
 
 class Crystal240(Fermentable):
-    name = 'Crystal 240'
-    potential = .72
+    name = "Crystal 240"
+    potential = 0.72
     color = 240
 
 
 class SpecialB(Fermentable):
-    name = 'Special B'
-    potential = .72
+    name = "Special B"
+    potential = 0.72
     color = 300
 
 
 class CaraAroma(Fermentable):
-    name = 'CaraAroma'
-    potential = .74
+    name = "CaraAroma"
+    potential = 0.74
     color = 350
 
 
 class ChocolateMalt(Fermentable):
-    name = 'Chocolate Malt'
-    potential = .65
+    name = "Chocolate Malt"
+    potential = 0.65
     color = 1000
 
 
 class BlackMalt(Fermentable):
-    name = 'Black Malt'
-    potential = .715
+    name = "Black Malt"
+    potential = 0.715
     color = 1300
 
 
 class Caramel(Fermentable):
-    name = 'Caramel (E150)'
+    name = "Caramel (E150)"
     potential = 0
     color = 10000
     in_mash = False

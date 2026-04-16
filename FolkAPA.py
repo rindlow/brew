@@ -8,7 +8,7 @@ from brew.fermentables import (
     WheatMalt,
     GoldenSyrup,
 )
-from brew.hops import Amarillo, Simcoe
+from brew.hops import Amarillo
 from brew.shbf import AmericanPaleAle
 from brew.yeast import LibertyBellAle
 
@@ -22,7 +22,7 @@ class Recipe(brew.Recipe):
             MarisOtterAleMalt(1.25),
             MunichI(1.0),
             WheatMalt(0.25),
-            GoldenSyrup(0.25)
+            GoldenSyrup(0.25),
         ]
         self.hops = [Amarillo(5, 60), Amarillo(25, 15), Amarillo(25, 0)]
         self.yeast = LibertyBellAle()

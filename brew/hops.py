@@ -1,137 +1,138 @@
-from .recipe import dryhop, firstwort
 from . import templates
+from .recipe import dryhop, firstwort
 
 
 class Hop:
+    minutes: int | str = 0
+    name = "<hop>"
 
-    minutes = 0
-    name = '<hop>'
-
-    def __init__(self, amount, minutes, alpha=None):
+    def __init__(
+        self, amount: int, minutes: int | str, alpha: float | None = None
+    ) -> None:
         self.amount = amount
         self.minutes = minutes
         if alpha is not None:
             self.alpha = alpha
 
-    def html(self):
+    def html(self) -> str:
         if self.minutes == 0:
-            when = 'Flame Out'
+            when = "Flame Out"
         elif self.minutes == dryhop:
-            when = 'Dry Hop'
+            when = "Dry Hop"
         elif self.minutes == firstwort:
-            when = 'First Wort'
+            when = "First Wort"
         else:
-            when = f'{self.minutes} min'
-        return templates.row3(self.name, f'{self.amount} g', when)
+            when = f"{self.minutes} min"
+        return templates.row3(self.name, f"{self.amount} g", when)
 
-    def instructions(self):
+    def instructions(self) -> str:
         if self.minutes == dryhop:
-            when = 'Dry Hop'
+            when = "Dry Hop"
         elif self.minutes == firstwort:
-            when = 'First Wort'
+            when = "First Wort"
         else:
-            when = f'{self.minutes} min'
-        return templates.row3(when, self.name, f'{self.amount} g')
+            when = f"{self.minutes} min"
+        return templates.row3(when, self.name, f"{self.amount} g")
 
-    def fermenter(self):
-        return templates.row1(f'{self.name}, {self.amount} g')
+    def fermenter(self) -> str:
+        return templates.row1(f"{self.name}, {self.amount} g")
 
 
 class Amarillo(Hop):
-    name = 'Amarillo'
+    name = "Amarillo"
     alpha = 10
 
 
 class BavariaMandarina(Hop):
-    name = 'Bavaria Mandarina'
+    name = "Bavaria Mandarina"
     alpha = 6.0
 
 
 class Bobek(Hop):
-    name = 'Bobek (Styrian Goldings)'
+    name = "Bobek (Styrian Goldings)"
     alpha = 5.0
 
 
 class BramblingCross(Hop):
-    name = 'Brambling Cross'
+    name = "Brambling Cross"
     alpha = 6.0
 
 
 class Cascade(Hop):
-    name = 'Cascade'
+    name = "Cascade"
     alpha = 5.8
 
 
 class Cluster(Hop):
-    name = 'Cluster'
+    name = "Cluster"
     alpha = 6.9
 
 
 class EastKentGoldings(Hop):
-    name = 'East Kent Goldings'
+    name = "East Kent Goldings"
     alpha = 4.8
 
 
 class Ekuanot(Hop):
-    name = 'Ekuanot'
+    name = "Ekuanot"
     alpha = 15
 
 
 class Enigma(Hop):
-    name = 'Enigma'
+    name = "Enigma"
     alpha = 16
 
 
 class Fuggle(Hop):
-    name = 'Fuggle'
+    name = "Fuggle"
     alpha = 5.0
 
 
 class Galaxy(Hop):
-    name = 'Galaxy'
+    name = "Galaxy"
     alpha = 13.5
 
 
 class HallertauTradition(Hop):
-    name = 'Hallertau Tradition'
+    name = "Hallertau Tradition"
     alpha = 6.0
 
 
 class HallertauerMittelfruh(Hop):
-    name = 'Hallertauer Mittelfruh'
+    name = "Hallertauer Mittelfruh"
     alpha = 3.7
 
 
 class Magnum(Hop):
-    name = 'Magnum'
+    name = "Magnum"
     alpha = 12.0
 
 
 class NorthernBrewer(Hop):
-    name = 'Northern Brewer'
+    name = "Northern Brewer"
     alpha = 8.0
 
 
 class Perle(Hop):
-    name = 'Perle'
+    name = "Perle"
     alpha = 8.0
 
 
 class Saaz(Hop):
-    name = 'Saaz'
+    name = "Saaz"
     alpha = 3.0
 
 
 class Simcoe(Hop):
-    name = 'Simcoe'
+    name = "Simcoe"
     alpha = 13.5
 
 
 class Target(Hop):
-    name = 'Target'
+    name = "Target"
     alpha = 10.0
 
 
 class Willamette(Hop):
-    name = 'Willamette'
+    name = "Willamette"
     alpha = 4.3

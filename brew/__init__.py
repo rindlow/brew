@@ -1,19 +1,16 @@
-from . import profiles
-from . import recipe
-from . import shbf
-from . import yeast
+"""Henrik's Brew Calculator."""
+
+from . import profiles, recipe, shbf, yeast
 
 __all__ = [
-    'Ingredient',
-    'MashSchedule'
-    'Recipe',
-    'SingleStepMashWithMashOut',
-    'Step'
-    'dryhop',
-    'firstwort',
-    'profiles',
-    'shbf',
-    'yeast',
+    "Ingredient",
+    "MashScheduleRecipe",
+    "SingleStepMashWithMashOut",
+    "Stepdryhop",
+    "firstwort",
+    "profiles",
+    "shbf",
+    "yeast",
 ]
 
 Ingredient = recipe.Ingredient

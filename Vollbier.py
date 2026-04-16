@@ -10,12 +10,9 @@ from brew.fermentables import (
     CaraRuby,
     ChocolateMalt,
 )
-from brew.hops import (
-    HallertauTradition,
-    Perle
-)
+from brew.hops import HallertauTradition, Perle
 import brew.shbf
-from brew.yeast import SaflagerW34_70
+from brew.yeast import SaflagerW3470
 
 
 class Recipe(brew.Recipe):
@@ -32,8 +29,9 @@ class Recipe(brew.Recipe):
         self.hops = [
             HallertauTradition(15, 60, alpha=6.0),
             Perle(20, 60, alpha=5.4),
-            HallertauTradition(15, 15, alpha=6.0)]
-        self.yeast = SaflagerW34_70()
+            HallertauTradition(15, 15, alpha=6.0),
+        ]
+        self.yeast = SaflagerW3470()
         self.mash = brew.SingleStepMashWithMashOut(67)
 
         self.boil_time = 60

@@ -1,21 +1,19 @@
-# -*- coding: utf-8 -*-
-
 from . import templates
 
 
 class Yeast:
+    attenuation = 0.75
+    sugar_attenuation = 1.225  # Estimated, no calculation behind
 
-    attenuation = .75
-    sugar_attenuation = 1.225   # Estimated, no calculation behind
-
-    def estimated_fg(self, mash, sugar):
+    def estimated_fg(self, mash: float, sugar: float) -> float:
         mash_points = 1000 * (mash - 1)
         sugar_points = 1000 * (sugar - 1)
-        points = (mash_points * (1 - self.attenuation)
-                  + sugar_points * (1 - self.sugar_attenuation))
+        points = mash_points * (1 - self.attenuation) + sugar_points * (
+            1 - self.sugar_attenuation
+        )
         return 1 + (points / 1000)
 
-    def html(self):
+    def html(self) -> str:
         return templates.row1(self.name)
 
 
@@ -30,12 +28,12 @@ class BelgianAle(Yeast):
 
 
 class BelgianSaison(Yeast):
-    name = 'Belgian Saison - Wyeast 3724'
+    name = "Belgian Saison - Wyeast 3724"
     attenuation = 0.77
 
 
 class BelgianStrongAle(Yeast):
-    name = 'Belgian Strong Ale - Wyeast 1388'
+    name = "Belgian Strong Ale - Wyeast 1388"
     attenuation = 0.75
 
 
@@ -45,7 +43,7 @@ class BohemianLager(Yeast):
 
 
 class CzechBudejoviceLager(Yeast):
-    name = 'Czech Budejovice Lager - WLP802'
+    name = "Czech Budejovice Lager - WLP802"
     attenuation = 0.77
 
 
@@ -55,12 +53,12 @@ class EmpireAle(Yeast):
 
 
 class GermanAleKolsch(Yeast):
-    name = 'German Ale/Kölsch - WLP029'
+    name = "German Ale/Kölsch - WLP029"
     attenuation = 0.75
 
 
 class K97(Yeast):
-    name = 'Safale K-97'
+    name = "Safale K-97"
     attenuation = 0.82
 
 
@@ -70,50 +68,50 @@ class LibertyBellAle(Yeast):
 
 
 class LondonAleIII(Yeast):
-    name = 'London Ale III - Wyeast 1318'
+    name = "London Ale III - Wyeast 1318"
     attenuation = 0.73
 
 
 class LondonESBAle(Yeast):
-    name = 'London ESB Ale - Wyeast 1968'
+    name = "London ESB Ale - Wyeast 1968"
     attenuation = 0.69
 
 
 class Nottingham(Yeast):
-    name = 'Lallemand Nottingham Ale'
+    name = "Lallemand Nottingham Ale"
     attenuation = 0.81
 
 
 class S04(Yeast):
-    name = 'Safale S-04 (Whitbread)'
+    name = "Safale S-04 (Whitbread)"
     attenuation = 0.73
 
 
-class SaflagerW34_70(Yeast):
-    name = 'Saflager W-34/70'
+class SaflagerW3470(Yeast):
+    name = "Saflager W-34/70"
     attenuation = 0.75
 
 
 class SouthernGermanLager(Yeast):
-    name = 'Southern German Lager - WLP838'
+    name = "Southern German Lager - WLP838"
     attenuation = 0.73
 
 
 class TrappistHighGravity(Yeast):
-    name = 'Trappist High Gravity - Wyeast 3789'
+    name = "Trappist High Gravity - Wyeast 3789"
     attenuation = 0.76
 
 
 class US05(Yeast):
-    name = 'Safale US-05'
+    name = "Safale US-05"
     attenuation = 0.73
 
 
 class WhitbreadAle(Yeast):
-    name = 'Whitbread Ale - Wyeast 1099'
+    name = "Whitbread Ale - Wyeast 1099"
     attenuation = 0.70
 
 
 class WestYorkshireAle(Yeast):
-    name = 'West Yorkshire Ale - Wyeast 1469'
+    name = "West Yorkshire Ale - Wyeast 1469"
     attenuation = 0.69

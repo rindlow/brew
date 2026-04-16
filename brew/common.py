@@ -1,25 +1,24 @@
-def lfill(s, width):
+def lfill(s: str, width: int) -> str:
     if len(s) > width:
         s = s[:width]
-    return ' ' * (width - len(s)) + s
+    return " " * (width - len(s)) + s
 
 
-def rfill(s, width):
+def rfill(s: str, width: int) -> str:
     if len(s) > width:
         s = s[:width]
-    return s + ' ' * (width - len(s))
+    return s + " " * (width - len(s))
 
 
-def slider(label, minval, maxval, val, fmt):
+def slider(label: str, minval: float, maxval: float, val: float, fmt: str) -> None:
     tick = (maxval - minval) / 40.0
     pos = int((val - minval) / tick)
-    print('  ', rfill(label, 3), rfill(fmt % val, 6),
-          rfill(fmt % minval, 6), end='')
+    print("  ", rfill(label, 3), rfill(fmt % val, 6), rfill(fmt % minval, 6), end="")
     for i in range(-5, 45):
         if i == pos:
-            print('X', end='')
+            print("X", end="")
         elif i in (0, 39):
-            print('|', end='')
+            print("|", end="")
         else:
-            print('-', end='')
-    print(' ', fmt % maxval)
+            print("-", end="")
+    print(" ", fmt % maxval)
