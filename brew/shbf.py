@@ -150,6 +150,20 @@ class EnglishDarkMild(Style):
     max_ebc = 90
 
 
+class Kolsch(Style):
+    code = '3B'
+    min_og = 1.042
+    max_og = 1.046
+    min_fg = 1.006
+    max_fg = 1.010
+    min_abv = 4.6
+    max_abv = 5.0
+    min_ibu = 20
+    max_ibu = 27
+    min_ebc = 8
+    max_ebc = 14
+
+
 class EnglishOrdinaryBitter(Style):
     code = '3F'
     min_og = 1.034

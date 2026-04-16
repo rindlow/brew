@@ -59,6 +59,11 @@ class GermanAleKolsch(Yeast):
     attenuation = 0.75
 
 
+class K97(Yeast):
+    name = 'Safale K-97'
+    attenuation = 0.82
+
+
 class LibertyBellAle(Yeast):
     name = "Liberty Bell Ale - Mangrove Jack's M36"
     attenuation = 0.76
@@ -84,11 +89,6 @@ class S04(Yeast):
     attenuation = 0.73
 
 
-class US05(Yeast):
-    name = 'Safale US-05'
-    attenuation = 0.73
-
-
 class SaflagerW34_70(Yeast):
     name = 'Saflager W-34/70'
     attenuation = 0.75
@@ -102,6 +102,11 @@ class SouthernGermanLager(Yeast):
 class TrappistHighGravity(Yeast):
     name = 'Trappist High Gravity - Wyeast 3789'
     attenuation = 0.76
+
+
+class US05(Yeast):
+    name = 'Safale US-05'
+    attenuation = 0.73
 
 
 class WhitbreadAle(Yeast):

@@ -152,6 +152,12 @@ class MunichI(Fermentable):
     color = 15
 
 
+class CaraHell(Fermentable):
+    name = 'CaraHell Malt'
+    potential = .74
+    color = 20
+
+
 class DarkMunich(Fermentable):
     name = 'Dark Münich Malt'
     potential = .78
