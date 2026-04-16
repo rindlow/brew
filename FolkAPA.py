@@ -24,7 +24,7 @@ class Recipe(brew.Recipe):
             WheatMalt(0.25),
             GoldenSyrup(0.25)
         ]
-        self.hops = [Simcoe(15, 15), Amarillo(10, 15), Amarillo(15, 0)]
+        self.hops = [Amarillo(5, 60), Amarillo(25, 15), Amarillo(25, 0)]
         self.yeast = LibertyBellAle()
         self.mash = brew.SingleStepMashWithMashOut(67)
 

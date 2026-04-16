@@ -22,7 +22,10 @@ class Recipe(brew.Recipe):
             CaraHell(0.25),
             WheatMalt(0.25),
         ]
-        self.hops = [HallertauerMittelfruh(55, 50), HallertauerMittelfruh(30, 0)]
+        self.hops = [
+            HallertauerMittelfruh(55, 50),
+            HallertauerMittelfruh(30, 0)
+        ]
         self.yeast = K97()
         self.mash = brew.SingleStepMashWithMashOut(67)
 
