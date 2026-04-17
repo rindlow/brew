@@ -2,6 +2,7 @@ from . import templates
 
 
 class Yeast:
+    name: str
     attenuation = 0.75
     sugar_attenuation = 1.225  # Estimated, no calculation behind
 

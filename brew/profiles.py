@@ -1,13 +1,13 @@
 class Profile:
-    max_boil_volume = 0.0
-    min_batch_size = 0.0
-    max_mash_volume = 0.0
-    max_malt_weight = 0.0
-    mash_efficiency = 0.0
-    water_in_malt_ratio = 0.0
-    kettle_deadspace = 0.0
-    power = 0.0
-    boil_off_rate = 0.0
+    max_boil_volume: float = 0.0
+    min_batch_size: float = 0.0
+    max_mash_volume: float = 0.0
+    max_malt_weight: float = 0.0
+    mash_efficiency: float = 0.0
+    water_in_malt_ratio: float = 0.0
+    kettle_deadspace: float = 0.0
+    power: float = 0.0
+    boil_off_rate: float = 0.0
 
 
 class Braumeister20l(Profile):

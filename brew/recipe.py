@@ -10,13 +10,11 @@ from typing import NamedTuple
 from . import templates
 from .common import lfill, rfill
 from .fermentables import Fermentable
-from .hops import Hop
+from .hops import DRYHOP, FIRSTWORT, Hop
 from .profiles import Profile
 from .shbf import Style
 from .yeast import Yeast
 
-dryhop = "dryhop"
-firstwort = "firstwort"
 NSTEPS = 6
 
 
@@ -33,17 +31,18 @@ class Recipe:
     fermentables: list[Fermentable]
     hops: list[Hop]
     other: list[Ingredient]
-    yeast: Yeast | None = None
-    style: Style | None = None
-    profile: Profile | None = None
+    yeast: Yeast
+    style: Style
+    profile: Profile
+    mash: MashSchedule
     batch_size = 0
-    boil_time = 0
+    boil_time: int = 0
     bg: float | None = None
     og: float | None = None
     dilute_batch = 0.0
     water_in_malt = 0.0
     sparge_volume = 0.0
-    mash_volume = 0.0
+    mash_volume: float = 0.0
     mash_grav = 0.0
     late_grav = 0.0
     style_override: str | None = None
@@ -72,7 +71,7 @@ class Recipe:
             self.sparge_volume += self.mash_volume - self.profile.max_mash_volume
             self.mash_volume = self.profile.max_mash_volume
 
-    def calc_gravities(self, *, report: bool) -> None:
+    def calc_gravities(self, report: bool = False) -> None:
         late_extract, potential_extract = self.calc_extract(report)
 
         if report:
@@ -109,7 +108,7 @@ class Recipe:
 
         self.og = wort.gravity()
 
-    def calc_extract(self, *, report: bool) -> None:
+    def calc_extract(self, report: bool = False) -> tuple[float, float]:
 
         def print_separator() -> None:
             print("  ", "-" * 54)
@@ -163,16 +162,18 @@ class Recipe:
     def estimated_extract(self) -> float:
         return self.profile.mash_efficiency * self.potential_extract()
 
-    def gravity_report(self, *, report: bool) -> None:
+    def gravity_report(self, report: bool = False) -> None:
         self.calc_gravities(report=report)
 
     def original_gravity(self) -> float:
         if self.og is None:
+            self.og = 0.0
             self.calc_gravities(report=False)
         return self.og
 
     def boil_gravity(self) -> float:
         if self.bg is None:
+            self.bg = 0.0
             self.calc_gravities(report=False)
         return self.bg
 
@@ -182,27 +183,30 @@ class Recipe:
         ft = (1 - math.exp(-0.04 * t)) / 4.15
         return fg * ft
 
-    def bitterness(self, *, report: bool) -> float:
-        ibu = 0
+    def bitterness(self, report: bool = False) -> float:
+        ibu: float = 0.0
         if report:
             print("Bitterness")
         for hop in self.hops:
-            if hop.minutes == dryhop:
+            if hop.minutes == DRYHOP:
                 minutes = 0
                 minstring = "Dry-Hop"
-            elif hop.minutes == firstwort:
+            elif hop.minutes == FIRSTWORT:
                 minutes = self.boil_time
                 minstring = "First Wort"
-            else:
+            elif isinstance(hop.minutes, int):
                 minutes = hop.minutes
                 minstring = f"{hop.minutes} min"
+            else:
+                minutes = 0
+                minstring = f"Warning! Invalid hop time '{hop.minutes}'"
             if minutes > self.boil_time:
                 print(
                     f"Warning! Hop time {minutes} longer than boil time"
                     f" {self.boil_time}"
                 )
             b = hop.amount * hop.alpha * self.utilsation(minutes) * 10 / self.batch_size
-            if hop.minutes == firstwort:
+            if hop.minutes == FIRSTWORT:
                 b *= 1.1
 
             if report:
@@ -221,7 +225,7 @@ class Recipe:
             print(rfill("   BU:GU", 20), lfill(f"{bugu:.3f}", 34))
         return ibu
 
-    def color(self, *, report: bool) -> float:
+    def color(self, report: bool = False) -> float:
         mcu = 0
         if report:
             print("Color")
@@ -246,7 +250,7 @@ class Recipe:
             fg = self.final_gravity()
         return (og - fg) * 131
 
-    def compliance_check(self, *, report: bool) -> bool:
+    def compliance_check(self, report: bool = False) -> bool:
         return self.style.compliance_check(
             self.original_gravity(),
             self.final_gravity(),
@@ -296,7 +300,7 @@ class Recipe:
         d["stats"] += templates.row2("SHBF style", style)
         return page.format(**d)
 
-    def design(self, *, report: bool) -> None:
+    def design(self, report: bool = False) -> None:
         self.gravity_report(report=report)
         self.bitterness(report=report)
         self.color(report=report)
@@ -400,23 +404,23 @@ class Recipe:
                     f"{self.boil_time} min", f.name, f"{f.amount:.2f} kg"
                 )
         d["other"] += "".join(
-            [hop.instructions() for hop in self.hops if hop.minutes != dryhop]
+            [hop.instructions() for hop in self.hops if hop.minutes != DRYHOP]
         )
         d["fermenter"] = self.yeast.html()
         d["fermenter"] += "".join(
-            [hop.fermenter() for hop in self.hops if hop.minutes == dryhop]
+            [hop.fermenter() for hop in self.hops if hop.minutes == DRYHOP]
         )
         d["other"] += "".join([o.html() for o in self.other])
         d["chartdata"] = self.chartdata()
         d["program"] = self.program()
-        d["mashvol"] = self.mash_volume
+        d["mashvol"] = str(self.mash_volume)
         d["heattime"] = self.time_as_str(self.heattime)
         d["mashtime"] = self.time_as_str(self.mashtime)
-        d["mashin"] = self.mashin
-        d["spargevol"] = self.sparge_volume
+        d["mashin"] = str(self.mashin)
+        d["spargevol"] = f"{self.sparge_volume:.1f}"
         d["boilup"] = self.time_as_str(self.boilup)
-        d["mashgrav"] = self.mash_grav
-        d["og"] = self.og
+        d["mashgrav"] = f"{self.mash_grav:.3f}"
+        d["og"] = f"{self.og:.3f}"
 
         return page.format(**d)
 
@@ -440,10 +444,29 @@ class Recipe:
         else:
             self.printlog()
 
-    def log(self, log: Log) -> None:
-        self.logs.append(log)
+    def log(
+        self,
+        brew_date: str | None = None,
+        mash_gravity: float | None = None,
+        original_gravity: float | None = None,
+        racking_date: str | None = None,
+        final_gravity: float | None = None,
+    ) -> None:
+        if not hasattr(self, "logs"):
+            self.logs = []
+        self.logs.append(
+            Log(
+                brew_date=brew_date,
+                mash_gravity=mash_gravity,
+                original_gravity=original_gravity,
+                racking_date=racking_date,
+                final_gravity=final_gravity,
+            )
+        )
 
     def printlog(self) -> None:
+        if not hasattr(self, "logs"):
+            return
         for (
             brew_date,
             mash_gravity,
@@ -483,7 +506,7 @@ class Ingredient:
         self.when = when
 
     def html(self) -> str:
-        return templates.row3(self.name, self.amount, self.when)
+        return templates.row3(self.name, f"{self.amount:.1f}", f"{self.when:.1f}")
 
 
 class MashSchedule:
@@ -552,12 +575,12 @@ class TooSmallBatchError(Exception):
 
 class Wort:
     def __init__(
-        self, extract: float, water: float, profile: Profile, *, report: bool
+        self, extract: float, water: float, profile: Profile, report: bool = False
     ) -> None:
-        self.extract = extract
-        self.volume = water
-        self.report = report
-        self.profile = profile
+        self.extract: float = extract
+        self.volume: float = water
+        self.report: bool = report
+        self.profile: Profile = profile
 
     def gravity(self) -> float:
         return 1 + self.extract / self.volume / 1000.0

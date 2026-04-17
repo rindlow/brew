@@ -14,7 +14,11 @@ yeast = defaultdict(int)
 
 for arg in sys.argv[1:]:
     name, ext = os.path.splitext(arg)
-    spec = importlib.util.spec_from_file_location(name, arg)
+    if (
+        spec := importlib.util.spec_from_file_location(name, arg)
+    ) is None or spec.loader is None:
+        print("spec import error")
+        break
     mod = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(mod)
     cls = mod.Recipe()
@@ -27,14 +31,14 @@ for arg in sys.argv[1:]:
 
     yeast[cls.yeast.name] += 1
 
-print('Malt')
+print("Malt")
 for m in sorted(malt):
-    print(' ', rfill(m, 20), lfill(f'{malt[m]:.2f}', 5))
+    print(" ", rfill(m, 20), lfill(f"{malt[m]:.2f}", 5))
 
-print('Hops')
+print("Hops")
 for h in sorted(hops):
-    print(' ', rfill(h, 20), lfill(str(hops[h]), 5))
+    print(" ", rfill(h, 20), lfill(str(hops[h]), 5))
 
-print('Yeast')
+print("Yeast")
 for y in sorted(yeast):
-    print(' ', rfill(y, 20), lfill(str(yeast[y]), 5))
+    print(" ", rfill(y, 20), lfill(str(yeast[y]), 5))

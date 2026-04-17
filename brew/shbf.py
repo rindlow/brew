@@ -2,6 +2,7 @@ from .common import slider
 
 
 class Style:
+    code: str
     min_og = 0.0
     max_og = 0.0
     min_fg = 0.0
@@ -14,7 +15,13 @@ class Style:
     max_ebc = 0.0
 
     def compliance_check(
-        self, og: float, fg: float, abv: float, ibu: float, ebc: float, *, report: bool
+        self,
+        og: float,
+        fg: float,
+        abv: float,
+        ibu: float,
+        ebc: float,
+        report: bool = False,
     ) -> bool:
 
         compliant = True

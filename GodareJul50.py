@@ -41,8 +41,8 @@ class Recipe(brew.Recipe):
             Saaz(50, 10),
         ]
         self.other = [
-            brew.Ingredient("Coriander seeds", "25 g", "in boil"),
-            brew.Ingredient("Bitter Orange peel", "40 g", "in boil"),
+            brew.Ingredient("Coriander seeds", 25, 50),
+            brew.Ingredient("Bitter Orange peel", 40, 50),
         ]
         self.yeast = BelgianAle()
         self.mash = brew.SingleStepMashWithMashOut(67)

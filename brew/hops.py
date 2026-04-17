@@ -1,5 +1,7 @@
 from . import templates
-from .recipe import dryhop, firstwort
+
+DRYHOP = "dryhop"
+FIRSTWORT = "firstwort"
 
 
 class Hop:
@@ -17,18 +19,18 @@ class Hop:
     def html(self) -> str:
         if self.minutes == 0:
             when = "Flame Out"
-        elif self.minutes == dryhop:
+        elif self.minutes == DRYHOP:
             when = "Dry Hop"
-        elif self.minutes == firstwort:
+        elif self.minutes == FIRSTWORT:
             when = "First Wort"
         else:
             when = f"{self.minutes} min"
         return templates.row3(self.name, f"{self.amount} g", when)
 
     def instructions(self) -> str:
-        if self.minutes == dryhop:
+        if self.minutes == DRYHOP:
             when = "Dry Hop"
-        elif self.minutes == firstwort:
+        elif self.minutes == FIRSTWORT:
             when = "First Wort"
         else:
             when = f"{self.minutes} min"

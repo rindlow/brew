@@ -14,8 +14,8 @@ class Fermentable:
         return 46 * 8.3454 * self.potential
 
     def potential_extract(
-        self, total_amount: float | None = None, *, report: bool
-    ) -> None:
+        self, total_amount: float | None = None, report: bool = False
+    ) -> float:
         if report:
             if total_amount is None:
                 percent = ""
@@ -34,7 +34,7 @@ class Fermentable:
             )
         return self.potential_extract_per_kg() * self.amount
 
-    def mcu(self, batch_size: float, *, report: bool) -> float:
+    def mcu(self, batch_size: float, report: bool = False) -> float:
         if self.color == 0:
             mcu = 0.0
         else:

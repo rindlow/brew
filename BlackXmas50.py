@@ -41,8 +41,8 @@ class Recipe(brew.Recipe):
             Saaz(50, 10),
         ]
         self.other = [
-            brew.Ingredient("Coriander seeds", "25 g", "in boil"),
-            brew.Ingredient("Bitter Orange peel", "40 g", "in boil"),
+            brew.Ingredient("Coriander seeds", 25, 50),
+            brew.Ingredient("Bitter Orange peel", 40, 50),
         ]
         self.yeast = EmpireAle()
         self.mash = brew.SingleStepMashWithMashOut(67)
@@ -52,10 +52,10 @@ class Recipe(brew.Recipe):
 
 if __name__ == "__main__":
     recipe = Recipe()
+    # recipe.log(
+    #     brew_date="2018-09-29",
+    #     original_gravity=1.076,
+    #     racking_date="2018-10-13",
+    #     final_gravity=1.01,
+    # )
     recipe.run()
-#     recipe.log(
-#         brew_date="2018-09-29",
-#         original_gravity=1.076,
-#         racking_date="2018-10-13",
-#         final_gravity=1.01,
-#     )
