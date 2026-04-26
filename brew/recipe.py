@@ -261,6 +261,9 @@ class Recipe:
         )
 
     def html(self) -> str:
+        if not hasattr(self, "other"):
+            self.other = []
+
         page = templates.page()
         d = collections.defaultdict(str)
         other = ""
@@ -385,6 +388,8 @@ class Recipe:
         return p
 
     def instructions(self) -> str:
+        if not hasattr(self, "other"):
+            self.other = []
         page = templates.instructions()
         d = collections.defaultdict(str)
         d["name"] = self.name

@@ -1,20 +1,20 @@
 #!/usr/bin/env python
 
-import brew
-from brew.profiles import Braumeister20l
+from brew import Recipe, SingleStepMash
 from brew.fermentables import (
+    GoldenSyrup,
     MarisOtterAleMalt,
     MunichI,
     WheatMalt,
-    GoldenSyrup,
 )
 from brew.hops import Amarillo
+from brew.profiles import Braumeister20l
 from brew.shbf import AmericanPaleAle
 from brew.yeast import LibertyBellAle
 
 
-class Recipe(brew.Recipe):
-    def __init__(self):
+class Recipe(Recipe):
+    def __init__(self) -> None:
         self.name = "FolkAPA"
         self.style = AmericanPaleAle()
         self.profile = Braumeister20l()
@@ -24,9 +24,13 @@ class Recipe(brew.Recipe):
             WheatMalt(0.25),
             GoldenSyrup(0.25),
         ]
-        self.hops = [Amarillo(5, 60), Amarillo(25, 15), Amarillo(25, 0)]
+        self.hops = [
+            Amarillo(5, 60, alpha=9.6),
+            Amarillo(25, 15, alpha=9.6),
+            Amarillo(25, 0, alpha=9.6),
+        ]
         self.yeast = LibertyBellAle()
-        self.mash = brew.SingleStepMashWithMashOut(67)
+        self.mash = SingleStepMash(67)
 
         self.boil_time = 60
         self.batch_size = 20

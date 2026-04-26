@@ -23,8 +23,8 @@ class Recipe(brew.Recipe):
             WheatMalt(0.25),
         ]
         self.hops = [
-            HallertauerMittelfruh(55, 50),
-            HallertauerMittelfruh(30, 0)
+            HallertauerMittelfruh(55, 50, alpha=3.7),
+            HallertauerMittelfruh(30, 0, alpha=3.7),
         ]
         self.yeast = K97()
         self.mash = brew.SingleStepMashWithMashOut(67)
